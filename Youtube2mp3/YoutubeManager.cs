@@ -48,7 +48,7 @@ namespace Youtube2mp3
 
             var playlist = youtubeService.PlaylistItems.List("snippet");//make next page
             playlist.PlaylistId = _playlistId;
-            playlist.MaxResults = 2;
+            playlist.MaxResults = 50;
             var videos = playlist.Execute();
             var list = videos.Items;
             return list;

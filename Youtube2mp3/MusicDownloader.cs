@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -31,16 +32,19 @@ namespace Youtube2mp3
                 .OrderByDescending(info => info.AudioBitrate)
                 .First();
 
-            var audioDownloader = new AudioDownloader(video, _path + video.Title + video.AudioExtension);
+            if (video.RequiresDecryption)
+            {
+                DownloadUrlResolver.DecryptDownloadUrl(video);
+            }
 
-            audioDownloader.DownloadProgressChanged += (o, args) => progressModel.Progress = args.ProgressPercentage;
+            var audioDownloader = new AudioDownloader(video,Path.Combine(_path,video.Title+video.AudioExtension));
 
-            new Task(()=>Download(audioDownloader,title)).Start();
-        }
-        private void Download(AudioDownloader audioDownloader, string title)
-        {
+            audioDownloader.DownloadProgressChanged += (o, args) => progressModel.Progress = args.ProgressPercentage*85;
+            audioDownloader.AudioExtractionProgressChanged += (sender, args) => progressModel.Progress = 85 + args.ProgressPercentage * 0.15;
             audioDownloader.Execute();
-            _songRoot.Songs.Add(new Song(){Title = title});
+            _songRoot.Songs.Add(new Song() { Title = title });
+            _songRoot.Save();
         }
+    
     }
 }

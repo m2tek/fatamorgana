@@ -17,12 +17,12 @@ namespace Youtube2mp3
             Songs=new List<Song>();
         }
 
-        public static void Save(SongRoot songRoot)
+        public void Save()
         {
             using (Stream stream = File.Open(App.SongsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
             {
                 var serializer = new XmlSerializer(typeof(SongRoot));
-                serializer.Serialize(stream, songRoot);
+                serializer.Serialize(stream, this);
             }
         }
 

@@ -69,7 +69,7 @@ namespace Youtube2mp3.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SongRoot.Save(_songList);
+            _songList.Save();
         }
 
         private void settings_Click(object sender, RoutedEventArgs e)
