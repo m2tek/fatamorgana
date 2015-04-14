@@ -1,0 +1,50 @@
+<Controls:MetroWindow x:Class="Youtube2mp3.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tb="http://www.hardcodet.net/taskbar" 
+        ShowIconOnTitleBar="True"
+        xmlns:local="clr-namespace:Youtube2mp3"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="Youtube Sync" Height="350" Width="525" Icon="/Icons/Synchronize.png"
+        Closing="Window_Closing" StateChanged="MetroWindow_StateChanged_1" >
+   
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="sync" Click="syncButton_Click"/>
+            <Button Content="settings" Click="settings_Click"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <!-- declare the command as a local resource -->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="261*"/>
+            <RowDefinition Height="59*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.Resources>
+            <local:MinimizeCommand
+        x:Key="MessageCommand" />
+        </Grid.Resources>
+
+        <tb:TaskbarIcon
+          IconSource="/Icons/sync.ico"
+          ToolTipText="Youtube Sync"
+            LeftClickCommand="{StaticResource MessageCommand}"
+            LeftClickCommandParameter="this"
+          >
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Sync Now" Click="syncButton_Click"/>
+                    <MenuItem Header="Exit" Click="Exit_Click"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+        <Controls:ProgressRing Grid.Row="0" Name="waitingProgressRing" IsActive="False" Margin="228,130,229,71" />
+        
+        <StackPanel Name="downloadsStackPanel" Grid.Row="0" Grid.RowSpan="2" CanVerticallyScroll="True">
+            
+        </StackPanel>
+    </Grid>
+</Controls:MetroWindow>
