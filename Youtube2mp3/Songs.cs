@@ -12,20 +12,25 @@ namespace Youtube2mp3
     {
         public List<Song> Songs { get; set; }
 
-        public static void Save(string filename, SongRoot songRoot)
+        private SongRoot()
         {
-            using (Stream stream = File.Open(@"D:\youtube\" + filename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
+            Songs=new List<Song>();
+        }
+
+        public static void Save(SongRoot songRoot)
+        {
+            using (Stream stream = File.Open(App.SongsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
             {
                 var serializer = new XmlSerializer(typeof(SongRoot));
                 serializer.Serialize(stream, songRoot);
             }
         }
 
-        public static SongRoot Load(string filename)
+        public static SongRoot Load()
         {
             try
             {
-                using (Stream stream = File.Open(@"D:\youtube\" + filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (Stream stream = File.Open(App.SongsFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var serializer = new XmlSerializer(typeof(SongRoot));
                     var songRoot = ((SongRoot)serializer.Deserialize(stream));
@@ -35,7 +40,7 @@ namespace Youtube2mp3
             }
             catch (FileNotFoundException)
             {
-                return new SongRoot(){Songs = new List<Song>()};
+                return new SongRoot();
             }
         } 
     }

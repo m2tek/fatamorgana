@@ -9,24 +9,31 @@ namespace Youtube2mp3.Views
 {
     public partial class MainWindow : MetroWindow
     {
-        private readonly Youtube _youtube;
+        private readonly YoutubeManager _youtubeManager;
         private SongRoot _songList;
         public static MainWindow handler;
+        private SettingsModel _settings;
 
         public MainWindow()
         {
             InitializeComponent();
             handler = this;
-            SettingsModel settings = SettingsModel.Load("settings");
-            _youtube = new Youtube(settings.GoogleUsername, settings.GooglePassword, settings.YoututbeUsername, settings.YoutubePlaylist);
-            _songList = SongRoot.Load("songs");
+            _settings = SettingsModel.Load();
+            _songList = SongRoot.Load();
 
-            new Task(SyncSongs).Start();
+            if (_settings.YoutubePlaylist == null)//todo: better check if the settings are valid
+            {
+                new Settings().ShowDialog();
+            }
+            else
+            {
+                new Task(SyncSongs).Start();
+            }
         }
 
         private void SyncSongs()
         {
-            var downloader = new MusicDownloader("D:/youtube/", _songList);
+            var downloader = new MusicDownloader(_settings.FolderName, _songList);
             new Task(() => DownloadAllVideos(downloader)).Start();
             
             //sleep for 2 hours.
@@ -36,20 +43,25 @@ namespace Youtube2mp3.Views
         private void syncButton_Click(object sender, RoutedEventArgs e)
         {
             waitingProgressRing.IsActive = true;
-            var downloader = new MusicDownloader("D:/youtube/",_songList);
+            var downloader = new MusicDownloader(_settings.FolderName, _songList);
             new Task(() => DownloadAllVideos(downloader)).Start();
             waitingProgressRing.IsActive = false;
         }
 
-        private void DownloadAllVideos(MusicDownloader downloader)
+        private async void DownloadAllVideos(MusicDownloader downloader)
         {
-            Dispatcher.Invoke(new Func<bool>(() => waitingProgressRing.IsActive = true));
-            foreach (var video in _youtube.GetAllVideos())
+            if (_settings.YoutubePlaylist == null)//todo: better check if the settings are valid
             {
-                if(_songList.Songs != null && _songList.Songs.Exists(song => song.Title == video.Title)) continue;
+                new Settings().ShowDialog();
+            }
+            Dispatcher.Invoke(new Func<bool>(() => waitingProgressRing.IsActive = true));
+            var _youtubeManager = new YoutubeManager();
+            foreach (var video in await _youtubeManager.GetAllVideos())
+            {
+                if(_songList.Songs != null && _songList.Songs.Exists(song => song.Title == video.Snippet.Title)) continue;
                 Dispatcher.Invoke(
                     new Func<int>(() =>
-                          downloadsStackPanel.Children.Add(new Controls.VideoDownload(video.Title, downloader, video.Link())))
+                          downloadsStackPanel.Children.Add(new Controls.VideoDownload(video.Snippet.Title, downloader, video.Snippet.ResourceId.VideoId.ToYoutubeLink())))
                     );
             }
             Dispatcher.Invoke(new Func<bool>(() => waitingProgressRing.IsActive = false));
@@ -57,7 +69,7 @@ namespace Youtube2mp3.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SongRoot.Save("songs",_songList);
+            SongRoot.Save(_songList);
         }
 
         private void settings_Click(object sender, RoutedEventArgs e)

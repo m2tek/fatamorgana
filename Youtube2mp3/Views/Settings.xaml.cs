@@ -11,13 +11,13 @@ namespace Youtube2mp3.Views
         public Settings()
         {
             InitializeComponent();
-            _settingsModel = SettingsModel.Load("settings") ?? new SettingsModel();
+            _settingsModel = SettingsModel.Load();
             this.DataContext = _settingsModel;
         }
 
         private void MetroWindow_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SettingsModel.Save("settings",_settingsModel);
+            SettingsModel.Save(_settingsModel);
         }
     }
 }

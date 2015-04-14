@@ -5,7 +5,7 @@
         ShowIconOnTitleBar="True"
         xmlns:local="clr-namespace:Youtube2mp3"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Youtube Sync" Height="350" Width="525" Icon="/Icons/Synchronize.png"
+        Title="YoutubeManager Sync" Height="350" Width="525" Icon="/Icons/Synchronize.png"
         Closing="Window_Closing" StateChanged="MetroWindow_StateChanged_1" >
    
     <Controls:MetroWindow.RightWindowCommands>
@@ -30,7 +30,7 @@
 
         <tb:TaskbarIcon
           IconSource="/Icons/sync.ico"
-          ToolTipText="Youtube Sync"
+          ToolTipText="YoutubeManager Sync"
             LeftClickCommand="{StaticResource MessageCommand}"
             LeftClickCommandParameter="this"
           >
