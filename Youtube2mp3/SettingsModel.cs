@@ -12,9 +12,6 @@ namespace Youtube2mp3
     //todo: load only once and keep instance
     public class SettingsModel : INotifyPropertyChanged
     {
-        public string GoogleUsername { get; set; }
-        public string GooglePassword { get; set; }
-        public string YoututbeUsername { get; set; }
         public string YoutubePlaylist { get; set; }
 
         private string _folderName;

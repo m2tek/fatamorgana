@@ -5,25 +5,19 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Youtube2mp3"
         Icon="/Icons/Synchronize.png"
-        Title="Settings" Height="270" Width="218" Closing="MetroWindow_Closing_1">
-  
+        Title="Settings" Height="150" Width="500" Closing="MetroWindow_Closing_1">
+
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands/>
     </controls:MetroWindow.RightWindowCommands>
-    <Grid>
+    <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-<!--        <TextBox Name="UsernameTextBlock"  HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding GoogleUsername}" VerticalAlignment="Top" Width="190" controls:TextBoxHelper.Watermark="google username" controls:TextBoxHelper.ClearTextButton="True" />-->
-<!--        <TextBox Name="PasswordTextBlock"  HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" Text="{Binding GooglePassword}" VerticalAlignment="Top" Width="190" Grid.Row="1" controls:TextBoxHelper.Watermark="google password" controls:TextBoxHelper.ClearTextButton="True" />-->
-<!--        <TextBox Name="YotubeUsernameTextBlock" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding YoututbeUsername}" VerticalAlignment="Top" Width="190" Grid.Row="2" controls:TextBoxHelper.Watermark="yoututbe username" controls:TextBoxHelper.ClearTextButton="True" />-->
-        <TextBox Name="playlistTextBlock" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding YoutubePlaylist}" VerticalAlignment="Top" Width="190" Grid.Row="3" controls:TextBoxHelper.Watermark="copy playlist url" controls:TextBoxHelper.ClearTextButton="True" />
-        <TextBox Name="folderTextBlock" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding FolderName}" VerticalAlignment="Top" Width="156" Grid.Row="4" controls:TextBoxHelper.Watermark="music folder"/>
-        <Button Grid.Row="4" Height="23" Margin="171,10,5,13" RenderTransformOrigin="0.256,1.24" Content="..." Style="{DynamicResource SquareButtonStyle}">
+        <TextBox Name="playlistTextBlock" HorizontalAlignment="Left" Height="23" Margin="10,12,0,0" TextWrapping="Wrap" Text="{Binding YoutubePlaylist}" VerticalAlignment="Top" Width="472" controls:TextBoxHelper.Watermark="copy playlist url" controls:TextBoxHelper.ClearTextButton="True" />
+        <TextBox Name="folderTextBlock" HorizontalAlignment="Left" Height="23" Margin="10,21,0,0" TextWrapping="Wrap" Text="{Binding FolderName}" VerticalAlignment="Top" Width="438" Grid.Row="1" controls:TextBoxHelper.Watermark="music folder"/>
+        <Button Grid.Row="1" Height="23" Margin="453,22,10,13" RenderTransformOrigin="0.256,1.24" Content="..." Style="{DynamicResource SquareButtonStyle}">
             <i:Interaction.Behaviors>
                 <local:FolderDialogBehavior SetterName="FolderName"/>
             </i:Interaction.Behaviors>

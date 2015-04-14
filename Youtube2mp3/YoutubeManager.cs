@@ -19,17 +19,11 @@ namespace Youtube2mp3
     {
         private const string c_developerKey = "AIzaSyC-hQDSMypihadkfnlbjcOuFBpQDTU9uP4";
 
-        private readonly string _username;
-        private readonly string _password;
-        private readonly string _youtubeUsername;
         private readonly string _playlistId;
 
         public YoutubeManager()
         {
             var settings = SettingsModel.Load();
-            _username = settings.GoogleUsername;
-            _password = settings.GooglePassword;
-            _youtubeUsername = settings.YoututbeUsername;
             if (settings.YoutubePlaylist != null)
             {
                 var uri = new Uri(settings.YoutubePlaylist);
@@ -46,11 +40,19 @@ namespace Youtube2mp3
                 ApplicationName = "YoutubeSync"
             });
 
-            var playlist = youtubeService.PlaylistItems.List("snippet");//make next page
-            playlist.PlaylistId = _playlistId;
-            playlist.MaxResults = 50;
-            var videos = playlist.Execute();
-            var list = videos.Items;
+            var list = new List<PlaylistItem>();
+            string token=null;
+            do
+            {
+                var playlist = youtubeService.PlaylistItems.List("snippet");
+                playlist.PlaylistId = _playlistId;
+                playlist.MaxResults = 50;
+                playlist.PageToken = token;
+                var videos = playlist.Execute();
+                list.AddRange(videos.Items);
+                token = videos.NextPageToken;
+            } while (token != null); //iterate over next pages
+           
             return list;
         }
 
