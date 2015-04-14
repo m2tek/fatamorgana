@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Youtube2mp3.Models;
 
@@ -17,7 +18,7 @@ namespace Youtube2mp3.Controls
             downloadProgressBar.SetBinding(ProgressBar.ValueProperty, "Progress");
             videotitleTextBlock.Text = title;
 
-            downloader.SaveVideo(link,progressModel,title);
+            new Task(()=>downloader.SaveVideo(link,progressModel,title)).Start();
         }
     }
 }
